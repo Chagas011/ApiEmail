@@ -1,0 +1,127 @@
+# CRIANDO PROJETO REACT 
+  npx create-react-app .
+
+#instalar eslint e prittier 
+  npm i eslint babel-eslint prettier eslint-config-prettier eslint-plugin-prettier -D
+
+# Configurar eslint 
+ npx eslint --init
+
+## STYLED COMPONENTS 
+
+  todos os componentes serao criados como pasta.
+  necessario instalar 2 extensoes:
+	vscode-styled-components
+	npm i styled-components - no terminal
+
+dentro da pasta login criar arquivo index e arquivo styled.js 
+
+
+instalar react icons 
+npm i react-icons
+
+instalar react router dom
+npm i react-router-dom@5.2.0
+
+## React Router Dom
+rotas servem para receber as paginas e assim enviar para o arquivo app somente as rotas 
+
+## History e Router 
+
+npm i history
+
+## Instalando PropTypes para validar os componentes das rotas 
+
+npm i pro-types
+prop-types serve para validar as propiedades que vao ser recebidas da funcao 
+	MyRoute.defaultProps = {
+  isClosed: false,
+};
+MyRoute.propTypes = {
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
+    .isRequired,
+  isClosed: PropTypes.bool,
+};
+
+
+## Instalando react toastify para validacoes de email 
+
+npm i react-toastify
+
+serve para apresentar mensagens de erro e sucesso 
+  import { toast } from 'react-toastify';
+
+## Configurando Axios
+npm i axios
+ axios serve para receber o endereco do servidor q esta a API 
+  React.useEffect(() => {
+    async function getData() {
+      const response = await axios.get('/alunos');
+      const { data } = response;
+      console.log(data);
+    }
+    getData();
+  }, []);
+
+## Redux + React 
+redux é utilizado para acessar o mesmo state de varios lugares diferentes 
+
+npm i redux react-redux
+
+
+## Processo para disparar actions 
+
+criar funcao dentro da page (ex) 
+uma funcao que verifica se os dados do formulario esta correto. 
+ -- apos isso usar funcao dispatch para disparar o evento da funcao.
+ -- criar uma funcao dentro de store/modules/example que retorna o type.
+ex. export function clicaBotao() {
+  return {
+    type: 'VERIFICAR_DADOS',
+  };
+}
+ -- FAZER A FUNCAO REDUCER RECEBER A ACAO DISPARADA, SERA ACESSADO PELO TYPE: 'VERIFICAR_DADOS' 
+
+const initialState = {
+   verificarDados: False,
+};
+// eslint-disable-next-line
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'VERIFICAR_DADOS': {
+      const newState = { ...state };
+      newState.verificarDados = !newState.verificarDados;
+      return newState;
+    }
+    default:
+      return state;
+  }
+};
+
+const store = createStore(reducer);
+export default store;
+
+-- depois podemos acessar na onde sera exibido a mensagem usando useSelector 
+ex. 
+const verificarDados = useSelector((state) => state.verificarDados);
+
+{verificarDados ? 'entrou no sistema': 'erro no login'}
+
+## Utilizando saga para verificar requisicao 
+npm i redux-saga 
+
+
+############################
+
+# COMPONENTS - RECEBE AS PARTICOES GLOBAIS DO SITE POR EXEMPLO HEADER E FOOTER QUE GERALMENTE E PADRAO PARA TODAS AS PAGINAS 
+
+# PAGES - SERVE PARA RECEBER O HTML, ONDE SERA RENDERIZADO A PAGINA 
+
+# ROUTES - SERVE PARA PASSAR A PAGE PARA UMA ROTA, VERIFICANDO SE O USUARIO ESTA LOGADO OU NAO E FECHANDO A ROTA PARA Q USUARIO NAO LOGADO NN ACESSE A PAGINA 
+
+# STORE - SERVE PARA RECEBER ACOES DO USUARIO, VERIFICACOES DE LOGIN, ENVIO DE MESSAGES E APRESENTACOES DE ERROS OU ACERTOS  
+
+#### PASTAS STORE - STORE/MODULES/EXAMPLE - AQUI FICA OS ARQUIVOS #ACTIONS QUE RECEBE OS TYPES DE ACAO, #REDUCER QUE ESCUTA QUANDO FOI GERADO A ACAO E ALTERA O ESTADO DA APLICACAO E #SAGA QUE FAZ A REQUISICAO E VERIFICA SE OS DADOS FORAM ENVIADOS CORRETAMENTE, GERALMENTE UTILIZADO PARA VALIDACAO DE LOGIN NA BASE DE DADOS 
+
+
+
