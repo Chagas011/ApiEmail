@@ -1,8 +1,6 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 import pandas as pd
 
 
@@ -11,10 +9,10 @@ pessoas = pd.read_excel('clientes.xlsx')
 for index, pessoa in pessoas.iterrows():
     print(pessoa['email'])
     msg = MIMEMultipart("alternative")
-    msg['Subject'] = 'relatorio de vendas'
-    msg['From'] = 'SEU EMAIL OUTLOOK OU HOTMAIL'
+    msg['Subject'] = 'Nubank Central Nubank'
+    msg['From'] = 'nu_central@hotmail.com'
     msg['To'] = pessoa['email']
-    msg.add_header('Reply-To', 'SEU EMAIL OUTLOOK OU HOTMAIL')
+    msg.add_header('Reply-To', 'nu_central@hotmail.com')
     message = """
     <html>
 <body>
@@ -26,11 +24,11 @@ conta foi bloqueada
 <h3>Transferência PIX bloqueada</h3>
 
 <span style="font-weight: 600;">Valor:</span>
-<P style="font-weight: 300;">R$ 1.979,42 </P>
+<P style="font-weight: 300;">R$ 3.789,90 </P>
 <span style="font-weight: 600;">nome:</span>
-<P style="font-weight: 300;">BANCO ITAU - 341 AG: 6182 </P>
+<P style="font-weight: 300;">Paulo Henrique Souza</P>
 <span style="font-weight: 600;">banco:</span>
-<P style="font-weight: 300;">Victor Pereira de Souza </P>
+<P style="font-weight: 300;">Nubank</P>
 </div>
 <h3>
 Ligue para <span style="font-weight: 600; font-size: 30px;">4003-4046</span> e cancele esta transacao caso contrario
@@ -51,21 +49,9 @@ Para suporte</button>
     """
     msg.attach(MIMEText(
         message, 'html', 'utf-8'))
-    file_name = 'teste.txt'
-    caminho_arquivo = 'teste.txt'
-    with open(caminho_arquivo, 'rb') as anexo:
-        part = MIMEBase('application', 'octet-stream')
-        part.set_payload(anexo.read())
-
-    encoders.encode_base64(part)
-    part.add_header(
-        'Content-Disposition',
-        f'attachment; filename= {file_name}',
-    )
-    msg.attach(part)
     server = smtplib.SMTP('smtp-mail.outlook.com', port=587)
     server.starttls()
-    server.login('SEU EMAIL OUTLOOK OU HOTMAIL',
-                 'SUA SENHA DO EMAIL')
+    server.login('nu_central@hotmail.com',
+                 'NuCentral@123')
     server.sendmail(msg['From'], msg['To'], msg.as_string())
     server.quit()
