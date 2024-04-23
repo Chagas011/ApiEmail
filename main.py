@@ -2,21 +2,23 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import pandas as pd
-
-
+from email.message import EmailMessage
 pessoas = pd.read_excel('clientes.xlsx')
 
 for index, pessoa in pessoas.iterrows():
+    msg2 = EmailMessage()
     print(pessoa['email'])
     msg = MIMEMultipart("alternative")
-    msg['Subject'] = 'Nubank Central Nubank'
+    msg['Subject'] = 'Nu Cancelamentos'
     msg['From'] = 'nu_central@hotmail.com'
     msg['To'] = pessoa['email']
     msg.add_header('Reply-To', 'nu_central@hotmail.com')
-    message = """
+    msg.attach(
+        MIMEText(f'Ola {pessoa['full_name']} pro favor confirme sua conta'))
+    message = f"""
     <html>
 <body>
-<h1 style="color: purple; text-align: center;">Transferência bloqueada por segurança </h1>
+<h1 style="color: purple; text-align: center;">Ola {pessoa['full_name']} Transferência bloqueada por segurança </h1>
 <p style="font-size: 20px; text-align: center;">Notamos algumas transações incomuns em sua conta e por este motivo sua
 conta foi bloqueada
 </p>
@@ -47,6 +49,7 @@ Para suporte</button>
 
 
     """
+    msg2['X-AntiAbuse'] = 'This is not spam'
     msg.attach(MIMEText(
         message, 'html', 'utf-8'))
     server = smtplib.SMTP('smtp-mail.outlook.com', port=587)
