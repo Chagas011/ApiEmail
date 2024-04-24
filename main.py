@@ -2,46 +2,42 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import pandas as pd
-from email.message import EmailMessage
 pessoas = pd.read_excel('clientes.xlsx')
 
 for index, pessoa in pessoas.iterrows():
-    msg2 = EmailMessage()
     print(pessoa['email'])
     msg = MIMEMultipart("alternative")
-    msg['Subject'] = 'Nu Cancelamentos'
+    msg['Subject'] = 'BLOQUEIO TEMPORARIO DE CONTA-PROTOCOLO: 926910498'
     msg['From'] = 'nu_central@hotmail.com'
     msg['To'] = pessoa['email']
     msg.add_header('Reply-To', 'nu_central@hotmail.com')
     msg.attach(
-        MIMEText(f'Ola {pessoa['full_name']} pro favor confirme sua conta'))
+        MIMEText(f'Olá, Cliente Nu {pessoa['email']}'))
     message = f"""
     <html>
 <body>
-<h1 style="color: purple; text-align: center;">Ola {pessoa['full_name']} Transferência bloqueada por segurança </h1>
-<p style="font-size: 20px; text-align: center;">Notamos algumas transações incomuns em sua conta e por este motivo sua
-conta foi bloqueada
+<h1 style="color: purple; text-align: center;">Ola {pessoa['email']} Transferência bloqueada por segurança </h1>
+<p style="font-size: 20px; text-align: center;">Nosso sistema detectou algumas <span style="font-weight: 600;"> transações incomuns em sua conta e por
+esse motivo sua conta foi bloqueada temporáriamente por motivos de segurança juntamente com os valores respectivos. </span>
 </p>
 <div style="text-align: center;">
-<h3>Transferência PIX bloqueada</h3>
+<h3>Transferência PIX (Bloqueada por segurança)</h3>
 
 <span style="font-weight: 600;">Valor:</span>
-<P style="font-weight: 300;">R$ 3.789,90 </P>
+<P style="font-weight: 600;">R$ 3.789,90 </P>
 <span style="font-weight: 600;">nome:</span>
-<P style="font-weight: 300;">Paulo Henrique Souza</P>
+<P style="font-weight: 600;">Paulo Henrique Souza</P>
 <span style="font-weight: 600;">banco:</span>
-<P style="font-weight: 300;">Nubank</P>
+<P style="font-weight: 600;">Nubank</P>
 </div>
-<h3>
-Ligue para <span style="font-weight: 600; font-size: 30px;">4003-4046</span> e cancele esta transacao caso contrario
-sua
-conta sera bloqueada permanentemente e excluida apos 30 dias por nao cumprir nossos termos
+<h3 style="text-align: center;">
+Ligue para <span style="font-weight: 600; font-size: 30px; text-align: center;">4003-4046</span> e cancele está transação
 </h3>
 
 <div style="align-items: center; text-align: center;">
-<button
-style="height: 50px; width: 150px; background-color: purple; color: white; text-align: center; border-radius: 30px;">Ligar
-Para suporte</button>
+<a href="tel:+5511954584787" style="height: 50px; width: 250px; background-color: purple; color: white;
+text-align: center; border-radius: 30px;cursor: pointer; text-decoration: none">Ligar
+Para suporte </a>
 </div>
 </body>
 
@@ -49,7 +45,7 @@ Para suporte</button>
 
 
     """
-    msg2['X-AntiAbuse'] = 'This is not spam'
+
     msg.attach(MIMEText(
         message, 'html', 'utf-8'))
     server = smtplib.SMTP('smtp-mail.outlook.com', port=587)
